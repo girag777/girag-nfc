@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permiso y hardware NFC -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.GiragNFC">
+
+        <!--
+            singleTask + taskAffinity vacío: la app corre en su propia tarea, así
+            al terminar (finishAndRemoveTask) el usuario vuelve directo a AppSheet.
+            Los tags NFC y los nuevos enlaces llegan por onNewIntent().
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="">
+
+            <!-- Icono en el lanzador (útil para pruebas) -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep link: giragnfc://grabar?doc=VALOR_DOC&pwd=VALOR_PWD -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="grabar"
+                    android:scheme="giragnfc" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
